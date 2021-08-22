@@ -60,4 +60,6 @@ public Action Hook_OnSpawn(Handle event, const char[] name, bool dontBroadcast)
 		return Plugin_Continue;
 
 	SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorHuman.IntValue, 1);
+
+	return Plugin_Continue;
 }
