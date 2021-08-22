@@ -28,7 +28,7 @@ public OnPluginStart()
 
 public OnPluginEnd()
 {
-    UnHookEvent("player_spawn", Hook_OnSpawn)
+    UnhookEvent("player_spawn", Hook_OnSpawn)
 }
 
 public Action ZR_OnClientInfect(&client, &attacker, &bool:motherInfect, &bool:respawnOverride, &bool:respawn)
@@ -47,9 +47,9 @@ public Action ZR_OnClientInfect(&client, &attacker, &bool:motherInfect, &bool:re
 public void ZR_OnClientInfected(client, attacker, bool:motherInfect, bool:respawnOverride, bool:respawn)
 {
 	if (!IsClientInGame(client) || !IsPlayerAlive(client))
-        return;
-	
-    SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorZombie.IntValue, 1);
+		return;
+
+	SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorZombie.IntValue, 1);
 }
 
 public Action Hook_OnSpawn(Handle event, const char[] name, bool dontBroadcast) 
@@ -57,7 +57,7 @@ public Action Hook_OnSpawn(Handle event, const char[] name, bool dontBroadcast)
 	int client = GetClientOfUserId(GetEventInt(event, "userid"));
 	
 	if (!IsClientInGame(client) || !IsPlayerAlive(client) || !ZR_IsClientHuman(client))
-        return Plugin_Continue;
+		return Plugin_Continue;
 
-    SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorHuman.IntValue, 1);
+	SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorHuman.IntValue, 1);
 }
