@@ -2,6 +2,8 @@
 #include <zombiereloaded>
 #include <multicolors>
 
+#pragma newdecls required
+
 ConVar g_InfectionMinPlayer;
 ConVar g_InfectionArmorZombie;
 ConVar g_InfectionArmorHuman;
@@ -11,11 +13,11 @@ public Plugin myinfo =
 	name = "[ZR] No Alone Infection & No Armor",
 	author = "DSASDFGH, REZOR, Modified by. Someone, maxime1907",
 	description = "Control min number of players for infection and zm/human armor amount",
-	version = "1.2",
+	version = "1.3",
 	url = "https://gitlab.com/counterstrikeglobaloffensive/sm-plugins/noaloneinfectionnoarmor"
 }
 
-public OnPluginStart()
+public void OnPluginStart()
 {
 	g_InfectionMinPlayer = CreateConVar("zr_infect_min_players", "2", "Minimum number of players to start the infection", FCVAR_NOTIFY, true, 0.0, true, 64.0);
 	g_InfectionArmorZombie = CreateConVar("zr_armor_zombie", "0", "Armor amount for zombies", FCVAR_NOTIFY, true, 0.0, true, 100.0);
@@ -26,12 +28,12 @@ public OnPluginStart()
 	AutoExecConfig(true);
 }
 
-public OnPluginEnd()
+public void OnPluginEnd()
 {
-    UnhookEvent("player_spawn", Hook_OnSpawn)
+    UnhookEvent("player_spawn", Hook_OnSpawn);
 }
 
-public Action ZR_OnClientInfect(&client, &attacker, &bool:motherInfect, &bool:respawnOverride, &bool:respawn)
+public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
 {
 	int players = GetClientCount(true);
 
@@ -44,7 +46,7 @@ public Action ZR_OnClientInfect(&client, &attacker, &bool:motherInfect, &bool:re
 	return Plugin_Continue;
 }
 
-public void ZR_OnClientInfected(client, attacker, bool:motherInfect, bool:respawnOverride, bool:respawn)
+public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, bool respawnOverride, bool respawn)
 {
 	if (!IsClientInGame(client) || !IsPlayerAlive(client))
 		return;
@@ -52,9 +54,9 @@ public void ZR_OnClientInfected(client, attacker, bool:motherInfect, bool:respaw
 	SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorZombie.IntValue, 1);
 }
 
-public Action Hook_OnSpawn(Handle event, const char[] name, bool dontBroadcast) 
+public Action Hook_OnSpawn(Event event, const char[] name, bool dontBroadcast) 
 {
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(event.GetInt("userid"));
 	
 	if (!IsClientInGame(client) || !IsPlayerAlive(client) || !ZR_IsClientHuman(client))
 		return Plugin_Continue;
