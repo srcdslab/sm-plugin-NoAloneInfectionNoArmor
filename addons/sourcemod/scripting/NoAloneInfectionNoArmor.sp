@@ -11,7 +11,7 @@ public Plugin myinfo =
 	name = "[ZR] No Alone Infection & No Armor",
 	author = "DSASDFGH, REZOR, Modified by. Someone, maxime1907",
 	description = "Control min number of players for infection and zm/human armor amount",
-	version = "1.2",
+	version = "1.3",
 	url = "https://gitlab.com/counterstrikeglobaloffensive/sm-plugins/noaloneinfectionnoarmor"
 }
 
@@ -52,9 +52,9 @@ public void ZR_OnClientInfected(client, attacker, bool:motherInfect, bool:respaw
 	SetEntProp(client, Prop_Send, "m_ArmorValue", g_InfectionArmorZombie.IntValue, 1);
 }
 
-public Action Hook_OnSpawn(Handle event, const char[] name, bool dontBroadcast) 
+public Action Hook_OnSpawn(Event event, const char[] name, bool dontBroadcast) 
 {
-	int client = GetClientOfUserId(GetEventInt(event, "userid"));
+	int client = GetClientOfUserId(event.GetInt("userid"));
 	
 	if (!IsClientInGame(client) || !IsPlayerAlive(client) || !ZR_IsClientHuman(client))
 		return Plugin_Continue;
