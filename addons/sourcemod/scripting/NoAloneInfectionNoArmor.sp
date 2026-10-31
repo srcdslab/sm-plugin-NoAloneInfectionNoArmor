@@ -13,12 +13,14 @@ public Plugin myinfo =
 	name = "[ZR] No Alone Infection & No Armor",
 	author = "DSASDFGH, REZOR, Modified by. Someone, maxime1907",
 	description = "Control min number of players for infection and zm/human armor amount",
-	version = "1.3",
+	version = "1.3.1",
 	url = "https://gitlab.com/counterstrikeglobaloffensive/sm-plugins/noaloneinfectionnoarmor"
 }
 
 public void OnPluginStart()
 {
+	LoadTranslations("NoAloneInfectionNoArmor.phrases");
+
 	g_InfectionMinPlayer = CreateConVar("zr_infect_min_players", "2", "Minimum number of players to start the infection", FCVAR_NOTIFY, true, 0.0, true, 64.0);
 	g_InfectionArmorZombie = CreateConVar("zr_armor_zombie", "0", "Armor amount for zombies", FCVAR_NOTIFY, true, 0.0, true, 100.0);
 	g_InfectionArmorHuman = CreateConVar("zr_armor_human", "100", "Armor amount for humans", FCVAR_NOTIFY, true, 0.0, true, 100.0);
@@ -39,7 +41,7 @@ public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, 
 
 	if (players <= g_InfectionMinPlayer.IntValue)
 	{
-		CPrintToChatAll("{green}[ZR]{lightred} There aren't enough players to start the infection cycle.");
+		CPrintToChatAll("{green}[ZR]{lightred} %t", "Not Enough Players For Infection");
 		return Plugin_Handled;
 	}
 

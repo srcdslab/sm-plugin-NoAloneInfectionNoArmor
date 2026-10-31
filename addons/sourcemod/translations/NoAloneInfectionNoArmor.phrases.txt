@@ -1,0 +1,13 @@
+"Phrases"
+{
+	"Not Enough Players For Infection"
+	{
+		"en"		"There aren't enough players to start the infection cycle."
+		"fr"		"Il n'y a pas assez de joueurs pour lancer le cycle d'infection."
+		"ru"		"Недостаточно игроков, чтобы начать заражение."
+		"es"		"No hay suficientes jugadores para iniciar el ciclo de infección."
+		"de"		"Es sind nicht genug Spieler da, um den Infektionszyklus zu starten."
+		"pt"		"Não há jogadores suficientes para iniciar o ciclo de infecção."
+		"chi"		"玩家人数不足，无法开始感染。"
+	}
+}
