@@ -8,12 +8,14 @@ ConVar g_InfectionMinPlayer;
 ConVar g_InfectionArmorZombie;
 ConVar g_InfectionArmorHuman;
 
+bool g_bNotEnoughPlayersNotified;
+
 public Plugin myinfo = 
 {
 	name = "[ZR] No Alone Infection & No Armor",
 	author = "DSASDFGH, REZOR, Modified by. Someone, maxime1907",
 	description = "Control min number of players for infection and zm/human armor amount",
-	version = "1.3.1",
+	version = "1.3.2",
 	url = "https://gitlab.com/counterstrikeglobaloffensive/sm-plugins/noaloneinfectionnoarmor"
 }
 
@@ -26,6 +28,7 @@ public void OnPluginStart()
 	g_InfectionArmorHuman = CreateConVar("zr_armor_human", "100", "Armor amount for humans", FCVAR_NOTIFY, true, 0.0, true, 100.0);
 
 	HookEvent("player_spawn", Hook_OnSpawn);
+	HookEvent("round_start", Hook_OnRoundStart, EventHookMode_PostNoCopy);
 	
 	AutoExecConfig(true);
 }
@@ -33,6 +36,12 @@ public void OnPluginStart()
 public void OnPluginEnd()
 {
     UnhookEvent("player_spawn", Hook_OnSpawn);
+    UnhookEvent("round_start", Hook_OnRoundStart, EventHookMode_PostNoCopy);
+}
+
+public void Hook_OnRoundStart(Event event, const char[] name, bool dontBroadcast)
+{
+	g_bNotEnoughPlayersNotified = false;
 }
 
 public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, bool &respawnOverride, bool &respawn)
@@ -41,7 +50,11 @@ public Action ZR_OnClientInfect(int &client, int &attacker, bool &motherInfect, 
 
 	if (players <= g_InfectionMinPlayer.IntValue)
 	{
-		CPrintToChatAll("{green}[ZR]{lightred} %t", "Not Enough Players For Infection");
+		if (!g_bNotEnoughPlayersNotified)
+		{
+			g_bNotEnoughPlayersNotified = true;
+			CPrintToChatAll("{green}[ZR]{lightred} %t", "Not Enough Players For Infection");
+		}
 		return Plugin_Handled;
 	}
 
